@@ -1,5 +1,4 @@
-.idea
 zeesarone.iml
-node_modules/
-.sass-cache/
-dist/
+.idea
+.sass-cache
+node_modules
