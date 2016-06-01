@@ -3,3 +3,4 @@ zeesarone.iml
 node_modules/
 .sass-cache/
 dist/
+.publish

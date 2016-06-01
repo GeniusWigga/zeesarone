@@ -5,9 +5,11 @@ import cleanCss from 'gulp-clean-css';
 import compass from 'gulp-compass';
 import handlebars from 'gulp-compile-handlebars';
 import rename from 'gulp-rename';
-import browserify from 'gulp-browserify';
-import uglify from 'gulp-uglify';
+import browserify from 'browserify';
+import babelify from 'babelify';
+import util from 'gulp-util';
 import clean from 'gulp-clean';
+import source from 'vinyl-source-stream';
 import ghPages from 'gulp-gh-pages';
 
 const srcSass = 'app/scss/app.scss';
@@ -54,10 +56,13 @@ gulp.task('handlebars', ['clean-html'], ()=> {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('scripts', () => {
-  return gulp.src('app/js/app.js')
-    .pipe(browserify())
-    .pipe(uglify())
+gulp.task('scripts', ['clean-js'], () => {
+  browserify({debug: true})
+    .transform(babelify)
+    .require('./app/js/app.js')
+    .bundle()
+    .on('error', util.log)
+    .pipe(source('app.js'))
     .pipe(gulp.dest('./dist/js'))
 });
 
@@ -82,11 +87,21 @@ gulp.task('clean-html', ()=> {
     .pipe(clean())
 });
 
+gulp.task('clean-js', ()=> {
+  return gulp.src('dist/js/app.js')
+    .pipe(clean())
+});
+
 gulp.task('watch', () => {
   gulp.watch(['dist/*.html'], ['html']);
   gulp.watch(['app/pages', 'app/pages/*.handlebars', './app/pages/**/*.handlebars'], ['handlebars']);
   gulp.watch(['app/js/**/*.js'], ['scripts']);
   gulp.watch(['app/scss/*.scss'], ['sass']);
+});
+
+gulp.task('clean', () => {
+  return gulp.src('dist')
+    .pipe(clean())
 });
 
 gulp.task('build', ['handlebars', 'sass', 'scripts']);
