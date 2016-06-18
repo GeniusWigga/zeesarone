@@ -56,12 +56,16 @@ gulp.task('handlebars', ['clean-html'], ()=> {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('scripts', ['clean-js'], () => {
-  browserify({debug: true})
-    .transform(babelify)
-    .require('./app/js/app.js')
+gulp.task('scripts', () => {
+  browserify('./app/js/app.js', {debug: true})
+    .transform(babelify, {presets: ["es2015"]})
     .bundle()
-    .on('error', util.log)
+    .on('error', function (err) {
+      // print the error (can replace with gulp-util)
+      console.log(err.message);
+      // end this stream
+      this.emit('end');
+    })
     .pipe(source('app.js'))
     .pipe(gulp.dest('./dist/js'))
 });
