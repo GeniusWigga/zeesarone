@@ -7,10 +7,10 @@ import handlebars from 'gulp-compile-handlebars';
 import rename from 'gulp-rename';
 import browserify from 'browserify';
 import babelify from 'babelify';
-import util from 'gulp-util';
 import clean from 'gulp-clean';
 import source from 'vinyl-source-stream';
 import ghPages from 'gulp-gh-pages';
+import {hbsHelper} from './app/hbsHelper'
 
 const srcSass = 'app/scss/app.scss';
 const distCss = 'dist/css';
@@ -41,11 +41,7 @@ gulp.task('handlebars', ['clean-html'], ()=> {
   const options = {
     ignorePartials: true, //ignores the unknown footer2 partial in the handlebars template, defaults to false
     batch: ['./app/pages/partials'],
-    helpers: {
-      capitals: function (str) {
-        return str.toUpperCase();
-      }
-    }
+    helpers: hbsHelper
   };
 
   return gulp.src('app/pages/*.handlebars')
@@ -70,6 +66,10 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('./dist/js'))
 });
 
+gulp.task('CNAME', ()=> {
+  return gulp.src('CNAME')
+    .pipe(gulp.dest('dist'))
+});
 
 gulp.task('sass', () => {
   return gulp.src(srcSass)
@@ -98,6 +98,7 @@ gulp.task('clean-js', ()=> {
 
 gulp.task('watch', () => {
   gulp.watch(['dist/*.html'], ['html']);
+  gulp.watch(['CNAME'], ['CNAME']);
   gulp.watch(['app/pages', 'app/pages/*.handlebars', './app/pages/**/*.handlebars'], ['handlebars']);
   gulp.watch(['app/js/**/*.js'], ['scripts']);
   gulp.watch(['app/scss/*.scss'], ['sass']);
@@ -108,6 +109,6 @@ gulp.task('clean', () => {
     .pipe(clean())
 });
 
-gulp.task('build', ['handlebars', 'sass', 'scripts']);
+gulp.task('build', ['handlebars', 'sass', 'scripts', 'CNAME']);
 
 gulp.task('dev', ['build', 'connect', 'watch']);
