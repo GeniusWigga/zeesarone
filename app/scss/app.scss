@@ -1,5 +1,92 @@
+@import './normailze';
 @import './variables';
 
 body {
-  background-color: $blue;
+  background-color: $bgGrey;
+  font-family: $fontOpenSans;
+  font-size: 10px;
+}
+
+.wrapper {
+  max-width: 1920px;
+  margin: 0 auto;
+
+  .content-wrapper {
+    padding: 1%;
+
+    h2 {
+      color: #c60707;
+      font-size: 3rem;
+      text-decoration: underline;
+      text-transform: uppercase;
+    }
+
+    .tracks-wrapper {
+      .track {
+        width: 25%;
+        display: inline-block;
+        position: relative;
+        box-sizing: border-box;
+        padding: 1% 1% 1% 0;
+      }
+
+      .track-icon {
+        position: relative;
+        display: inline-block;
+        img {
+          max-width: 100px;
+          max-height: 100px;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+        }
+        i {
+          position: absolute;
+          left: 50%;
+          font-size: 3rem;
+          color: white;
+          top: 50%;
+          -ms-transform: translate3d(-50%, -50%, 0);
+          -webkit-transform: translate3d(-50%, -50%, 0);
+          transform: translate3d(-50%, -50%, 0);
+        }
+      }
+
+      .track-info {
+        display: inline-block;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 80px;
+        position: absolute;
+        background: white;
+        left: 0;
+        width: 90%;
+        z-index: -1;
+        padding: 2% 2% 2% 7rem;
+        border-bottom-left-radius: 3rem;
+        border-top-left-radius: 3rem;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+header {
+
+  img {
+    width: 100%;
+  }
+  .artist-name {
+    position: absolute;
+    margin: 0;
+    top: 20%;
+    font-weight: bolder;
+    color: white;
+    left: 1%;
+    font-size: 7rem;
+    text-decoration: underline;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: -5px;
+  }
 }

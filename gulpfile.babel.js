@@ -10,15 +10,15 @@ import babelify from 'babelify';
 import clean from 'gulp-clean';
 import source from 'vinyl-source-stream';
 import ghPages from 'gulp-gh-pages';
-import {hbsHelper} from './app/hbsHelper'
+import { hbsHelper } from './app/hbsHelper'
 
 const srcSass = 'app/scss/app.scss';
 const distCss = 'dist/css';
 
 gulp.task('connect', () => {
   connect.server({
-    root: 'dist',
-    livereload: true
+    root : 'dist',
+    livereload : true
   });
 });
 
@@ -35,13 +35,13 @@ gulp.task('deploy', function () {
 gulp.task('handlebars', ['clean-html'], ()=> {
 
   const templateData = {
-    firstName: 'Kaanon'
+    firstName : 'Kaanon'
   };
 
   const options = {
-    ignorePartials: true, //ignores the unknown footer2 partial in the handlebars template, defaults to false
-    batch: ['./app/pages/partials'],
-    helpers: hbsHelper
+    ignorePartials : true, //ignores the unknown footer2 partial in the handlebars template, defaults to false
+    batch : ['./app/pages/partials'],
+    helpers : hbsHelper
   };
 
   return gulp.src('app/pages/*.handlebars')
@@ -53,8 +53,8 @@ gulp.task('handlebars', ['clean-html'], ()=> {
 });
 
 gulp.task('scripts', () => {
-  browserify('./app/js/app.js', {debug: true})
-    .transform(babelify, {presets: ["es2015"]})
+  browserify('./app/js/app.js', {debug : true})
+    .transform(babelify, {presets : ["es2015"]})
     .bundle()
     .on('error', function (err) {
       // print the error (can replace with gulp-util)
@@ -74,9 +74,9 @@ gulp.task('CNAME', ()=> {
 gulp.task('sass', () => {
   return gulp.src(srcSass)
     .pipe(compass({
-      css: distCss,
-      sass: 'app/scss',
-      style: 'compressed'
+      css : distCss,
+      sass : 'app/scss',
+      style : 'compressed'
     }))
     .pipe(cleanCss());
 });
@@ -101,6 +101,7 @@ gulp.task('watch', () => {
   gulp.watch(['CNAME'], ['CNAME']);
   gulp.watch(['app/pages', 'app/pages/*.handlebars', './app/pages/**/*.handlebars'], ['handlebars']);
   gulp.watch(['app/js/**/*.js'], ['scripts']);
+  gulp.watch(['app/assets/**/*.*'], ['copy']);
   gulp.watch(['app/scss/*.scss'], ['sass']);
 });
 
@@ -109,6 +110,6 @@ gulp.task('clean', () => {
     .pipe(clean())
 });
 
-gulp.task('build', ['handlebars', 'sass', 'scripts', 'CNAME']);
+gulp.task('build', ['handlebars', 'sass', 'scripts', 'copy', 'CNAME']);
 
 gulp.task('dev', ['build', 'connect', 'watch']);

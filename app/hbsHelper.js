@@ -1,5 +1,5 @@
 export const hbsHelper = {
-  capitals: (str) => {
+  capitals : (str) => {
     return str.toUpperCase();
   }
 };
