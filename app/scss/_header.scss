@@ -1,0 +1,18 @@
+header {
+  img {
+    width: 100%;
+  }
+  .artist-name {
+    position: absolute;
+    margin: 0;
+    top: 20%;
+    font-weight: bolder;
+    color: white;
+    left: 1%;
+    font-size: 7rem;
+    text-decoration: underline;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: -5px;
+  }
+}
